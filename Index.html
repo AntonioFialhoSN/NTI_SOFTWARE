@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.1.0/simple-statistics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="mensagem">
+        <div class="msgh">
+            <span id="msg">Hello world peopple</span>
+        </div>
+    </div>
+    <div class="Janela" id="Janela">
+        <div class="pagejanela">
+            <div class="headjanela">
+                <div id="texto">
+                    <h3>Escolha o arquivo para leitura</h3>
+                </div>
+                <div id="fechar" onclick="fecharJanela()">
+                    Fechar - X
+                </div>
+            </div>
+            <div class="bodyjanela">
+                <input type="file" id="csvFileInput" accept=".csv" style="margin-bottom: 10px;">
+            </div>
+        </div>
+    </div>
+    <div class="principal">
+        <header>
+            <div class="home">
+                <img src="unnamed.gif" alt="Ana Neri">
+            </div>
+            <div class="menu">
+                <div class="menu-item" onclick="toggleSubMenu('submenu1','submenu2','submenu3' )">Arquivo
+                    <div id="submenu1" class="submenu">
+                      <a onclick="abrirJanela()">Nova Leitura</a>
+                      <a onclick="showlistGlobal(csvData)">Imprimir</a>
+                      <a href="#">Log Leitura</a>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="toggleSubMenu('submenu2','submenu1','submenu3')">Tema
+                    <div id="submenu2" class="submenu">
+                        <a href="#">Light</a>
+                        <a href="#">Dark</a>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="toggleSubMenu('submenu3', 'submenu1','submenu2')">Ferramentas
+                    <div id="submenu3" class="submenu">
+                        <a href="#">Filtragem de Dados</a>
+                        <a href="#">Criação Login em massa</a>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="fechar()">Sair</div>
+                </div>
+        </header>
+    </div>
+    <div class="main">
+        <div class="show_dados">
+            <canvas id="myPieChart" style="margin: auto; width: 100%; height: 100%;"></canvas>
+        </div>
+        <div class="number_dados">
+            <table style="margin: auto; padding-top: 10px; text-align: center;">
+                    <tr style="background-color:#8d8a8aa2;">
+                        <td>Contas</td>
+                        <td style="padding-left: 5px; padding-right: 5px;">Quantidade</td>
+                        <td style="padding-left: 5px; padding-right: 5px;">% - Parcial</td>
+                        <td style="padding-left: 5px; padding-right: 5px;">% - Total</td>
+                    </tr>
+                    <tr>
+                        <td>Professores Ativos</td>
+                        <td><span id="total_profA"></span></td>
+                        <td><span id="%total_profA"></span>%</td>
+                        <td><span id="%%total_profA"></span>%</td>
+                    </tr>                    
+                    <tr>
+                        <td>Professores Inativos</td>
+                        <td><span id="total_profI"></span></td>
+                        <td><span id="%total_profI"></span>%</td>
+                        <td><span id="%%total_profI"></span>%</td>
+                    </tr>
+                    <tr>
+                        <td>Alunos Ativos</td>
+                        <td><span id="total_alunosA"></span></td>
+                        <td><span id="%total_alunosA"></span>%</td>
+                        <td><span id="%%total_alunosA"></span>%</td>
+                    </tr>                    
+                    <tr>
+                        <td>Alunos Inativos</td>
+                        <td><span id="total_alunosI"></span></td>
+                        <td><span id="%total_alunosI"></span>%</td>
+                        <td><span id="%%total_alunosI"></span>%</td>
+                    </tr>
+                    <tr>
+                        <td>Funcionários Ativos</td>
+                        <td><span id="total_funciA"></span></td>
+                        <td><span id="%total_funciA"></span>%</td>
+                        <td><span id="%%total_funciA"></span>%</td>
+                    </tr>                    
+                    <tr>
+                        <td>Funcionários Inativos</td>
+                        <td><span id="total_funciI"></span></td>
+                        <td><span id="%total_funciI"></span>%</td>
+                        <td><span id="%%total_funciI"></span>%</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Contas</td>
+                        <td><span id="total_contas"></span></td>
+                        <td> - </td>
+                        <td> 100% </td>
+                    </tr>
+            </table>
+
+        </div>
+        <div class="list_dados" id="list_dados">
+
+        </div>
+
+    </div>
+    <footer> <span> Suporte NTI </span> | <span> criado pela equipe NTI &copy; </span></footer>
+    <script src="algoritmo/interative.js"></script>
+    <script src="algoritmo/ferrametas.js"></script>
+    <script src="algoritmo/ferramentadash.js"></script>
+</body>
+</html>
