@@ -5,6 +5,9 @@ var emailcol = 0;
 var statuscol = 0;
 var lastsign = 0;
 
+var list_lastsign = [];
+
+var list_filtragem = [];
 
 
 document.getElementById('csvFileInput').addEventListener('change', handleFileSelect, false);
@@ -20,6 +23,7 @@ function handleFileSelect(evt) {
         plotdados(csvData, emailcol, statuscol);
         listlastsign(csvData, lastsign);
         piegraf(list_anos);
+        validacaocolunm(csvData, emailcol, statuscol, lastsign);
         displayFilteredResults(csvData);
         
     }; 
@@ -90,11 +94,6 @@ function showlistGlobal(filteredData){
 
     newWindow.document.write(table);
 }
-
-
-
-
-
 
 
 function plotdados(filteredData, emailcol, statuscol){
@@ -235,6 +234,8 @@ function piegraf(list){
         return frequencia[valor];
     });
 
+    list_lastsign = valoresUnicos;
+
     //console.log("Valores únicos:", valoresUnicos);
     //console.log("Frequência de cada valor:", frequenciaValoresUnicos);
     
@@ -270,3 +271,60 @@ function piegraf(list){
     var ctx = document.getElementById('myPieChart').getContext('2d');
     new Chart(ctx, config);
 }
+
+
+
+// Filtragem 
+// construção dos select
+
+// confirmação das variaves no dados csv e criação dass opçoes de ultimo ano
+function validacaocolunm(filteredData, emailcol, statuscol, lastsign){
+        var opclistar = document.getElementById('opcoeslast');
+
+    if(filteredData[0][emailcol] == 'Email Address [Required]' && filteredData[0][statuscol] == 'Status [READ ONLY]' && filteredData[0][lastsign] == 'Last Sign In [READ ONLY]'){
+        var opc = '';
+        for (x = 0; x < list_lastsign.length + 1; x++){
+            if (x == 0){
+                opc += '<option value="Todos"> Todos';
+            }else{
+                if (list_lastsign[x-1] == 'Neve'){
+                    opc+='<option value="Nunca"> Nunca';
+                } else{
+                    opc+='<option value="'+list_lastsign[x-1]+'"> '+list_lastsign[x-1];
+                }
+
+            }
+            opc += '</option>';
+        };
+        opclistar.innerHTML = opc;
+        
+        console.log(list_lastsign);
+    }else{
+        console.log('False');
+    }
+}
+
+
+// Filtro
+/*
+function filter(filteredData, emailcol, statuscol, lastsign){
+    var tipoUsuario = document.getElementById('opcoesusuario').value;
+    var status = document.getElementById('opcoesstatus').value;
+    var ultimoLogin = document.getElementById('opcoeslast').value;
+
+    // Aqui você pode realizar a lógica de filtragem com base nos valores selecionados
+    var resultadoFiltragem = [tipoUsuario, status, ultimoLogin];
+    if (resultadoFiltragem[0] == ){
+
+    }
+    for (var i = 1; i < filteredData.length; i++) {
+        for (var j = 0; j < filteredData[i].length; j++) {
+
+        }
+    }
+
+
+}*/
+
+
+

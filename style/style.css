@@ -198,6 +198,13 @@ main{
     flex-wrap: wrap;
 }
 
+#filterdados {
+    display: none;
+}
+
+#createmassa {
+    display: none;
+}
 
 .show_dados{
     background-color: var(--color0);
@@ -242,6 +249,106 @@ main{
 }
 
 .list_dados:hover{
+    border-top-left-radius: 15px;
+    border: var(--color0) solid 1px;
+    box-shadow: 0 4px 8px var(--color5);
+}
+
+
+
+.search{
+    background-color: var(--color0);
+    width: 30%;
+    height: 90%;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 2%;
+}
+
+.searchtitle{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    border-bottom: #000000 1px solid;
+    margin-bottom: 50px;
+
+}
+
+.selection{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.selection select{
+    margin-left: 10px;
+    width: 60%;
+}
+
+.campimp{
+    margin-top: 20px;
+    width: 95%;
+    text-align: right;
+    padding: 10px;
+    margin-right: 5%;
+}
+
+.campbtn button{
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--color0);
+    border-radius: 10px;
+    border-color: #000000;
+    border: solid 1px;
+}
+
+.campbtn button:hover{
+    background-color: var(--color1);
+    color: var(--color0);
+    border-color: var(--color0);
+}
+
+.campbtn{
+    margin-top: 40px;
+    width: 95%;
+    text-align: right;
+    padding: 10px;
+    margin-right: 5%;
+}
+
+.campimp button{
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--color0);
+    border-radius: 10px;
+    border-color: #000000;
+    border: solid 1px;
+}
+
+.campimp button:hover{
+    background-color: var(--color1);
+    color: var(--color0);
+    border-color: var(--color0);    
+}
+
+.search:hover{
+    border-top-left-radius: 15px;
+    border: var(--color0) solid 1px;
+    box-shadow: 0 4px 8px var(--color5);
+}
+
+.list_filter_dados{
+    background-color: var(--color0);
+    width: 60%;
+    height: 90%;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 5%;
+    margin-bottom: 2%;
+}
+
+.list_filter_dados:hover{
     border-top-left-radius: 15px;
     border: var(--color0) solid 1px;
     box-shadow: 0 4px 8px var(--color5);
