@@ -346,6 +346,8 @@ main{
     margin-left: 1%;
     margin-right: 5%;
     margin-bottom: 2%;
+    margin: auto;
+    overflow: auto; /* Adicione rolagem se o conteúdo exceder o tamanho da div */
 }
 
 .list_filter_dados:hover{

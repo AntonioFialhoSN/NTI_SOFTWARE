@@ -9,6 +9,8 @@ var list_lastsign = [];
 
 var list_filtragem = [];
 
+var listresults = [];
+
 
 document.getElementById('csvFileInput').addEventListener('change', handleFileSelect, false);
 
@@ -25,7 +27,6 @@ function handleFileSelect(evt) {
         piegraf(list_anos);
         validacaocolunm(csvData, emailcol, statuscol, lastsign);
         displayFilteredResults(csvData);
-        
     }; 
     reader.readAsText(file);
 
@@ -206,9 +207,7 @@ function listlastsign(filteredData, lastsign){
     for (var j = 1; j < filteredData.length - 1; j++) {
         list_anos.push(filteredData[j][lastsign].substring(0,4));
     }
-    console.log(list_anos.length);
-    console.log(csvData);
-}
+};
 
 function piegraf(list){
     var values1= list;
@@ -298,7 +297,7 @@ function validacaocolunm(filteredData, emailcol, statuscol, lastsign){
         };
         opclistar.innerHTML = opc;
         
-        console.log(list_lastsign);
+        //console.log(list_lastsign);
     }else{
         console.log('False');
     }
@@ -306,25 +305,553 @@ function validacaocolunm(filteredData, emailcol, statuscol, lastsign){
 
 
 // Filtro
-/*
+
 function filter(filteredData, emailcol, statuscol, lastsign){
     var tipoUsuario = document.getElementById('opcoesusuario').value;
     var status = document.getElementById('opcoesstatus').value;
     var ultimoLogin = document.getElementById('opcoeslast').value;
+    listresults = [];
 
-    // Aqui você pode realizar a lógica de filtragem com base nos valores selecionados
-    var resultadoFiltragem = [tipoUsuario, status, ultimoLogin];
-    if (resultadoFiltragem[0] == ){
+    if (tipoUsuario == 'Todos' && status == 'Todos' && ultimoLogin == 'Todos'){
+        displayResultsFilter(filteredData);
+    } else if (tipoUsuario != 'Todos' && status == 'Todos' && ultimoLogin == 'Todos'){
+        if(tipoUsuario == 'Alunos'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                if (cell && typeof cell === 'string' && cell.length >= 4){
+                    if (cell.substring(0, 4) == 'alun'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
 
-    }
-    for (var i = 1; i < filteredData.length; i++) {
-        for (var j = 0; j < filteredData[i].length; j++) {
+        }else if (tipoUsuario == 'Professores'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                if (cell && typeof cell === 'string' && cell.length >= 4){
+                    if (cell.substring(0, 4) == 'prof'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
 
+            displayResultsFilter(listresults);
+
+        }else if (tipoUsuario == 'Funcionários'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                if (cell && typeof cell === 'string' && cell.length >= 4){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun'){
+                        listresults.push(filteredData[i]);
+                    }
+                } 
+            }
+            displayResultsFilter(listresults);
+        } else{
+            console.log('Erro! não especificado o campo de tipo Usuário.');
+        }
+    } else if (tipoUsuario == 'Todos' && status != 'Todos' && ultimoLogin == 'Todos'){
+        if (status == 'Ativo'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 6){
+                    if (cell.substring(0, 6) == 'Active'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        } else if (status == 'Suspenso'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 6){
+                    if (cell.substring(0, 6) == 'Suspen'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else{
+            console.log('Erro! não especificado o campo de status.');
+        }
+    } else if (tipoUsuario == 'Todos' && status == 'Todos' && ultimoLogin != 'Todos'){
+        if(ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4){
+                    if (cell.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        }else{
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4){
+                    if (cell.substring(0, 4) == ultimoLogin){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        }
+    } else if (tipoUsuario != 'Todos' && status != 'Todos' && ultimoLogin == 'Todos'){
+        if(tipoUsuario == 'Alunos' && status == 'Ativo'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Active'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Alunos' && status == 'Suspenso'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Suspen'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        } else if(tipoUsuario == 'Professores' && status == 'Ativo'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Active'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Professores' && status == 'Suspenso'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Suspen'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Funcionários' && status == 'Ativo'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' && cell2.substring(0, 6) == 'Active'){
+                        listresults.push(filteredData[i]);
+                    }
+                } 
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Funcionários' && status == 'Suspenso'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' && cell2.substring(0, 6) == 'Suspen'){
+                        listresults.push(filteredData[i]);
+                    }
+                } 
+            }
+            displayResultsFilter(listresults);
+        }else{
+            console.log('Erro! não especificado o campo de tipo Usuário ou Status.');
+        }
+    } else if (tipoUsuario != 'Todos' && status == 'Todos' && ultimoLogin != 'Todos'){
+        if(tipoUsuario == 'Alunos' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                    if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if (tipoUsuario == 'Professores' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                    if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if (tipoUsuario == 'Funcionários' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' && cell2.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        } else {
+            if (tipoUsuario == 'Alunos'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                        if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+            } else if (tipoUsuario == 'Professores'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                        if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+            } else if (tipoUsuario == 'Funcionários'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                        if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' && cell2.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+
+            } else{
+                console.log('Erro! não especificado o campo de tipo Usuário ou Ultimo login.');
+            }
+        }
+    } else if (tipoUsuario == 'Todos' && status != 'Todos' && ultimoLogin != 'Todos'){
+        if(status == 'Ativo' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][statuscol];
+                var cell2 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 6 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                    if (cell.substring(0, 6) == 'Active' && cell2.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(status == 'Suspenso' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][statuscol];
+                var cell2 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 6 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                    if (cell.substring(0, 6) == 'Suspen' && cell2.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else{
+            if (status == 'Ativo'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][statuscol];
+                    var cell2 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 6 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                        if (cell.substring(0, 6) == 'Active' && cell2.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+            }else if (status == 'Suspenso'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][statuscol];
+                    var cell2 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 6 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 4){
+                        if (cell.substring(0, 6) == 'Suspen' && cell2.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+
+            } else {
+                console.log('Erro! não especificado o campo de tipo Status ou Ultimo login.');
+            }
+        }
+    } else if (tipoUsuario != 'Todos' && status != 'Todos' && ultimoLogin != 'Todos'){
+        if(tipoUsuario == 'Alunos' && status == 'Ativo' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Active' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Professores' && status == 'Ativo' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Active' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Funcionários' && status == 'Ativo' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' &&
+                     cell2.substring(0, 6) == 'Active' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Alunos' && status == 'Suspenso' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Suspen' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Professores' && status == 'Suspenso' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Suspen' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+
+        } else if(tipoUsuario == 'Funcionários' && status == 'Suspenso' && ultimoLogin == 'Nunca'){
+            for(var i = 1; i < filteredData.length; i++){
+                var cell = filteredData[i][emailcol];
+                var cell2 = filteredData[i][statuscol];
+                var cell3 = filteredData[i][lastsign];
+                if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                    if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' &&
+                     cell2.substring(0, 6) == 'Suspen' && cell3.substring(0, 4) == 'Neve'){
+                        listresults.push(filteredData[i]);
+                    } 
+                }
+            }
+            displayResultsFilter(listresults);
+        } else {
+            if(tipoUsuario == 'Alunos' && status == 'Ativo'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Active' && 
+                        cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+
+            } else if(tipoUsuario == 'Professores' && status == 'Ativo'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Active' && 
+                        cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+    
+            } else if(tipoUsuario == 'Funcionários' && status == 'Ativo'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' &&
+                         cell2.substring(0, 6) == 'Active' && cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+    
+            } else if(tipoUsuario == 'Alunos' && status == 'Suspenso'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) == 'alun' && cell2.substring(0, 6) == 'Suspen' && 
+                        cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+    
+            } else if(tipoUsuario == 'Professores' && status == 'Suspenso'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) == 'prof' && cell2.substring(0, 6) == 'Suspen' && 
+                        cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+    
+            } else if(tipoUsuario == 'Funcionários' && status == 'Suspenso'){
+                for(var i = 1; i < filteredData.length; i++){
+                    var cell = filteredData[i][emailcol];
+                    var cell2 = filteredData[i][statuscol];
+                    var cell3 = filteredData[i][lastsign];
+                    if (cell && typeof cell === 'string' && cell.length >= 4 &&
+                    cell2 && typeof cell2 === 'string' && cell2.length >= 6 &&
+                    cell3 && typeof cell3 === 'string' && cell3.length >= 4){
+                        if (cell.substring(0, 4) != 'prof' && cell.substring(0, 4) != 'alun' &&
+                         cell2.substring(0, 6) == 'Suspen' && cell3.substring(0, 4) == ultimoLogin){
+                            listresults.push(filteredData[i]);
+                        } 
+                    }
+                }
+                displayResultsFilter(listresults);
+    
+            } else {
+                console.log('Erro! não especificado o campo de tipo Usuário, Status ou Ultimo login.')
+            }
+        }
+    } else {
+            console.log("Erro! Filtro não especificado!");
+        }
+}
+
+
+function displayResultsFilter(filteredData) {
+
+    var resultContainer2 = document.getElementById('list_filter_dados');
+    
+    var table = '<table style="margin: auto; padding:10px">';
+    
+    if (filteredData.length == 0){
+        table = '<tr><td> Sem Resultado </td></tr>'
+    } else{
+        for (var i = 0; i < filteredData.length; i++) {
+            table += '<tr>';
+            for (var j = 0; j < filteredData[i].length; j++) {
+                table += '<td>' + filteredData[i][j] + '</td>';
+            }
+            table += '</tr>';
         }
     }
+    table += '</table>';
 
+    resultContainer2.innerHTML = table;
 
-}*/
+}
 
+function filtragemimp(listresults){
+    var newWindow = window.open('', '_blank', 'width=600,height=400,scrollbars=yes');
+        
+    var table = '<table style="margin: auto; padding:10px">';
 
+    for (var i = 0; i < listresults.length; i++) {
+        table += '<tr>';
+        for (var j = 0; j < listresults[i].length; j++) {
+            table += '<td>' + listresults[i][j] + '</td>';
+        }
+        table += '</tr>';
+    }
+    table += '</table>';
 
+    newWindow.document.write(table);
+
+}
