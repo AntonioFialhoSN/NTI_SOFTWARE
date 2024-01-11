@@ -12,6 +12,7 @@ var list_filtragem = [];
 var listresults = [];
 
 
+
 document.getElementById('csvFileInput').addEventListener('change', handleFileSelect, false);
 
 function handleFileSelect(evt) {
@@ -272,8 +273,8 @@ function piegraf(list){
 }
 
 
-
-// Filtragem 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Filtragem */
 // construção dos select
 
 // confirmação das variaves no dados csv e criação dass opçoes de ultimo ano
@@ -838,6 +839,10 @@ function displayResultsFilter(filteredData) {
 
 }
 
+
+
+
+
 function filtragemimp(listresults){
     var newWindow = window.open('', '_blank', 'width=600,height=400,scrollbars=yes');
         
@@ -855,3 +860,142 @@ function filtragemimp(listresults){
     newWindow.document.write(table);
 
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*PAGINA DE CRIAÇÃO EM MASSA*/
+
+lista_email = [];
+
+function getemails (csvData, emailcol){
+    for (var i = 1; i <= csvData.length; i++) {
+        if (csvData[i] && csvData[i].hasOwnProperty(emailcol)) {
+            var email = csvData[i][emailcol];
+            lista_email.push(email);
+        }
+    }
+}
+
+
+
+var listacsv = [['First Name','Last Name [Required]','Email Address [Required]','Password [Required]', 'Org Unit Path [Required]','Change Password at Next Sign-In']];
+
+
+
+function Gerador(){
+    var nomesTexto = document.getElementById("nomesInput").value;
+    var unidade = document.getElementById('opcoesunidade').value;
+
+    getemails(csvData, emailcol);
+
+    // Dividir o texto em linhas
+    var linhas = nomesTexto.split('\n');
+
+    // Remover espaços extras em cada linha
+    var nomesLimpos = linhas.map(function(nome) {
+        return nome.trim();
+    });
+
+    // Remover linhas vazias
+    var nomesFiltrados = nomesLimpos.filter(function(nome) {
+        return nome !== "";
+    });
+
+    var primeirosNomes = nomesFiltrados.map(function(nomeCompleto) {
+        var partes = nomeCompleto.split(' ');
+        return partes[0];
+    });  
+
+    var lastNomes = nomesFiltrados.map(function(nomeCompleto) {
+        var palavras = nomeCompleto.split(' ');
+        palavras.shift();
+        return palavras.join(' ');
+        
+    });
+
+    var listnomeminjunto = nomesFiltrados.map(function(nomeCompleto){
+         var nome = nomeCompleto.toLowerCase();
+         return nome.replace(/\s/g, '');
+    });
+
+    var list = [];
+
+    for(x=0; x < nomesFiltrados.length ; x++){
+        list = [];
+        var fnome = primeirosNomes[x];
+        var lnome = lastNomes[x];
+        var Password = 'ananeri123'; 
+        var org = '/Alunos/Alunos - '+ unidade;
+        var change = 'VERDADEIRO';
+        var nomeminjunto = listnomeminjunto[x];
+        var i = 2;
+        var email = 'aluno.'+nomeminjunto+'@ananerieducacao.com.br';
+    
+        // Verifica se o item já existe no array
+        while (lista_email.includes(email)) {
+            email = 'aluno.'+nomeminjunto+i+'@ananerieducacao.com.br';
+            i++;
+        }
+        list.push(fnome);
+        list.push(lnome);
+        list.push(email);
+        list.push(Password);
+        list.push(org);
+        list.push(change);
+        listacsv.push(list);
+    }
+
+    displayCreateMassa(listacsv);
+    
+}
+
+function displayCreateMassa(filteredData) {
+
+    var resultContainer3 = document.getElementById('list_create_massa');
+    
+    var table = '<table style="margin: auto; padding:10px">';
+    
+    if (filteredData.length == 0){
+        table = '<tr><td> Sem Resultado </td></tr>'
+    } else{
+        for (var i = 0; i < filteredData.length; i++) {
+            table += '<tr>';
+            for (var j = 0; j < filteredData[i].length; j++) {
+                table += '<td>' + filteredData[i][j] + '</td>';
+            }
+            table += '</tr>';
+        }
+    }
+    table += '</table>';
+
+    resultContainer3.innerHTML = table;
+}
+
+// Função para converter array em CSV
+function arrayToCSV(data) {
+    return data.map(row => row.join(',')).join('\n');
+}
+
+// Função para iniciar o download
+function downloadCSV() {
+    // Converta o array para CSV
+    const csvData = arrayToCSV(listacsv);
+
+    // Crie um objeto Blob (Binary Large Object) com os dados CSV
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+
+    // Crie um link de download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+
+    // Defina o nome do arquivo CSV
+    link.download = 'dados.csv';
+
+    // Adicione o link ao documento
+    document.body.appendChild(link);
+
+    // Clique no link para iniciar o download
+    link.click();
+
+    // Remova o link do documento
+    document.body.removeChild(link);
+    }

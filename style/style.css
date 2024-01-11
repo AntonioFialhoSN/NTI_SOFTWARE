@@ -356,10 +356,74 @@ main{
     box-shadow: 0 4px 8px var(--color5);
 }
 
+.Uplist{
+    background-color: var(--color0);
+    width: 35%;
+    height: 80%;
+    text-align: center;
+    margin-top: 5%;
+    margin-right: 2%;
+}
+.Uplisttitle{
+    margin-bottom: 15px;
+}
+.Uplistbody{
+    margin-bottom: 10px;
+}
+.list_create_massa{
+    background-color: var(--color0);
+    width: 60%;
+    height: 80%;
+    margin-top: 5%;
+    overflow: auto; /* Adicione rolagem se o conteúdo exceder o tamanho da div */
+}
+
+.Uplist:hover{
+    border-top-left-radius: 15px;
+    border: var(--color0) solid 1px;
+    box-shadow: 0 4px 8px var(--color5);
+}
+
+.list_create_massa:hover{
+    border-top-left-radius: 15px;
+    border: var(--color0) solid 1px;
+    box-shadow: 0 4px 8px var(--color5);
+}
+
+.createbtn button{
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--color0);
+    border-radius: 10px;
+    border-color: #000000;
+    border: solid 1px;
+}
+
+.createbtn button:hover{
+    background-color: var(--color1);
+    color: var(--color0);
+    border-color: var(--color0);    
+}
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 footer{
     text-align: center;
 }
 footer span{
     margin-left: 30px;
     margin-right: 30px;
+}
+
+@media (max-height: 1100px) {
+    .main{
+        height: 820px;
+    }
+
+}
+
+@media (max-height: 720px){
+    .main{
+        height: 520px;
+    }
 }

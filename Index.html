@@ -144,9 +144,27 @@
         </div>
     </div>
     <div class="main" id="createmassa">
-        'AAA
+        <div class="Uplist">
+            <div class="Uplisttitle">Criação de Usuários em Massa</div>
+            <div class="Uplistbody">
+                <label for="nomesInput">Digite os nomes (um por linha):</label> <br>
+                <textarea id="nomesInput" rows="10" cols="30"></textarea><br>
+                Unidade:<select id="opcoesunidade" style="padding: 1%;"> 
+                    <option value="Centro">Centro</option>
+                    <option value="Cohab">Cohab</option>
+                    <option value="Bacabal">Bacabal</option>
+                </select> 
+            </div>
+            <div class="createbtn">
+                <button onclick="Gerador()" style="margin-bottom: 10px;">Gerar Dados</button> <br>
+                <button onclick="downloadCSV()">Baixar arquivo CSV</button>
+            </div>
+        </div>
+        <div class="list_create_massa" id="list_create_massa">
+
+        </div>
     </div>
-    <footer> <span> Suporte NTI </span> | <span> criado pela equipe NTI &copy; </span></footer>
+    <footer> <span> Suporte NTI </span> | <span> criado pela equipe NTI  - ANTONIO FIALHO &copy; </span></footer>
     <script src="algoritmo/interative.js"></script>
     <script src="algoritmo/ferrametas.js"></script>
     <script src="algoritmo/ferramentadash.js"></script>
