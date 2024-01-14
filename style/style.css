@@ -31,7 +31,7 @@ body{
 .mensagem{
     position: absolute;
     width: 100%;
-    height: 50px;
+    height: 100px;
     text-align: right;
     display: none;
     
@@ -42,7 +42,6 @@ body{
 }
 .mensagem .msgh span{
     text-align: center;
-    background-color: var(--color4);
     border-radius: 10px;
     padding: 15px;
 }

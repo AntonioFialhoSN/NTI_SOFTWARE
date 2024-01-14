@@ -11,6 +11,10 @@ var list_filtragem = [];
 
 var listresults = [];
 
+var msg = document.getElementById("msg");
+var msgh = document.getElementById("msgh");
+var mensagem =  document.getElementById("mensagem");
+
 
 
 document.getElementById('csvFileInput').addEventListener('change', handleFileSelect, false);
@@ -877,13 +881,15 @@ function getemails (csvData, emailcol){
 
 
 
-var listacsv = [['First Name','Last Name [Required]','Email Address [Required]','Password [Required]', 'Org Unit Path [Required]','Change Password at Next Sign-In']];
+var listacsv = [];
 
 
 
 function Gerador(){
     var nomesTexto = document.getElementById("nomesInput").value;
     var unidade = document.getElementById('opcoesunidade').value;
+    listacsv = [['First Name','Last Name [Required]','Email Address [Required]','Password [Required]', 'Org Unit Path [Required]','Change Password at Next Sign-In']];
+
 
     getemails(csvData, emailcol);
 
@@ -914,10 +920,20 @@ function Gerador(){
 
     var listnomeminjunto = nomesFiltrados.map(function(nomeCompleto){
          var nome = nomeCompleto.toLowerCase();
-         return nome.replace(/\s/g, '');
+             // Substituir caracteres específicos
+                nome = nome.replace(/ã/g, 'a');
+                nome = nome.replace(/é/g, 'e');
+                nome = nome.replace(/á/g, 'a');
+                nome = nome.replace(/ç/g, 'c');
+                nome = nome.replace(/à/g, 'a');
+                nome = nome.replace(/í/g, 'i');
+                nome = nome.replace(/ì/g, 'i');
+            // Remover espaços
+         return nome = nome.replace(/\s/g, '');
     });
 
     var list = [];
+    var list2 = [];
 
     for(x=0; x < nomesFiltrados.length ; x++){
         list = [];
@@ -927,26 +943,43 @@ function Gerador(){
         var org = '/Alunos/Alunos - '+ unidade;
         var change = 'VERDADEIRO';
         var nomeminjunto = listnomeminjunto[x];
-        var i = 2;
         var email = 'aluno.'+nomeminjunto+'@ananerieducacao.com.br';
-    
-        // Verifica se o item já existe no array
-        while (lista_email.includes(email)) {
-            email = 'aluno.'+nomeminjunto+i+'@ananerieducacao.com.br';
-            i++;
+
+        if (lista_email.includes(email) == true) {
+            list2.push(email);
+        } else {
+            list.push(fnome);
+            list.push(lnome);
+            list.push(email);
+            list.push(Password);
+            list.push(org);
+            list.push(change);
+            listacsv.push(list);
         }
-        list.push(fnome);
-        list.push(lnome);
-        list.push(email);
-        list.push(Password);
-        list.push(org);
-        list.push(change);
-        listacsv.push(list);
+
     }
 
-    displayCreateMassa(listacsv);
+    if (list2.length > 0){
+        var text = "Segue os email já existem: <br>";
+        for (var i=0; i < list2.length; i++){
+            text += list2[i]+'<br>';
+        }
+        mensagem.style.display = 'block';
+        msg.innerHTML =  text;
+        msgh.style.backgroundColor = 'red';
+        msgh.style.color = 'white';  // A propriedade é 'color', não 'Color'
+        setTimeout(sumir_msg, 2000);
+    } else {
+        displayCreateMassa(listacsv);
+    }
+
     
 }
+
+function sumir_msg (){
+    mensagem.style.display='none';
+}
+
 
 function displayCreateMassa(filteredData) {
 
