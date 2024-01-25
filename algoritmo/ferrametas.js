@@ -821,6 +821,7 @@ function filter(filteredData, emailcol, statuscol, lastsign){
 
 
 function displayResultsFilter(filteredData) {
+    listaemailapagar(filteredData, emailcol);
 
     var resultContainer2 = document.getElementById('list_filter_dados');
     
@@ -844,7 +845,14 @@ function displayResultsFilter(filteredData) {
 }
 
 
-
+function listaemailapagar(list, emailcol){
+    var listaemailapagar = [];
+    for (x=0 ;x < list.length ;x++){
+        var email = list[x][emailcol];
+        listaemailapagar.push(email); 
+    }
+    console.log(listaemailapagar);
+}
 
 
 function filtragemimp(listresults){
@@ -941,7 +949,7 @@ function Gerador(){
         var lnome = lastNomes[x];
         var Password = 'ananeri123'; 
         var org = '/Alunos/Alunos - '+ unidade;
-        var change = 'VERDADEIRO';
+        var change = 'TRUE';
         var nomeminjunto = listnomeminjunto[x];
         var email = 'aluno.'+nomeminjunto+'@ananerieducacao.com.br';
 
