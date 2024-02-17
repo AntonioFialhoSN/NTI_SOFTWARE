@@ -931,11 +931,17 @@ function Gerador(){
              // Substituir caracteres específicos
                 nome = nome.replace(/ã/g, 'a');
                 nome = nome.replace(/é/g, 'e');
+                nome = nome.replace(/è/g, 'e');
+                nome = nome.replace(/ò/g, 'o');
+                nome = nome.replace(/ó/g, 'o');
+                nome = nome.replace(/õ/g, 'o');
                 nome = nome.replace(/á/g, 'a');
                 nome = nome.replace(/ç/g, 'c');
                 nome = nome.replace(/à/g, 'a');
                 nome = nome.replace(/í/g, 'i');
                 nome = nome.replace(/ì/g, 'i');
+                nome = nome.replace(/ù/g, 'u');
+                nome = nome.replace(/ú/g, 'u');
             // Remover espaços
          return nome = nome.replace(/\s/g, '');
     });
@@ -967,7 +973,7 @@ function Gerador(){
 
     }
 
-    if (list2.length > 0){
+    if (list2.length > 0 && lista_email.length > 0){
         var text = "Segue os email já existem: <br>";
         for (var i=0; i < list2.length; i++){
             text += list2[i]+'<br>';
@@ -977,7 +983,14 @@ function Gerador(){
         msgh.style.backgroundColor = 'red';
         msgh.style.color = 'white';  // A propriedade é 'color', não 'Color'
         setTimeout(sumir_msg, 2000);
-    } else {
+     }else if (lista_email.length == 0){
+        var text = "É preciso que carregue os dados antes de criar novos emails<br>";
+        mensagem.style.display = 'block';
+        msg.innerHTML =  text;
+        msgh.style.backgroundColor = 'red';
+        msgh.style.color = 'white';  // A propriedade é 'color', não 'Color'
+        setTimeout(sumir_msg, 2000);
+     }else {
         displayCreateMassa(listacsv);
     }
 
